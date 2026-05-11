@@ -25,7 +25,6 @@
       50%{background-color:#00ff00;} 66%{background-color:#0088ff;} 83%{background-color:#8800ff;}
       100%{background-color:#ff0000;}
     }
-
     body::before {
       content: "";
       position: fixed;
@@ -66,10 +65,7 @@
     .rainbow-active { animation: rainbowPulse 1.5s infinite; }
 
     .flying-emoji {
-      position: fixed;
-      z-index: 150;
-      pointer-events: none;
-      font-size: 2rem;
+      position: fixed; z-index: 150; pointer-events: none; font-size: 2rem;
       animation: flyAcross 2s linear forwards;
     }
     @keyframes flyAcross {
@@ -101,9 +97,10 @@
       color:#f0f7da; position:relative; box-shadow:0 0 55px #ff9800,0 0 30px #8bc34a;
     }
     .skin-modal { border:2px solid #8bc34a; }
-    .leaderboard-modal { border:2px solid #ffcc80; }
     .account-modal { border:2px solid #ff9800; text-align:center; }
     .messenger-modal { border:2px solid #ff9800; text-align:center; background:linear-gradient(160deg,#1b2a3a,#0a1a2a); }
+    .daily-modal { border:2px solid #ffcc80; }
+    .achievements-modal { border:2px solid #ffcc80; }
 
     .tab-panel { display:flex; gap:0.5rem; justify-content:center; margin-top:0.5rem; flex-wrap:wrap; }
     .tab-btn {
@@ -125,9 +122,11 @@
     .skin-price { font-size:0.7rem; color:#ffcc80; }
     .skin-owned { font-size:0.65rem; color:#8bc34a; }
 
-    .leader-list { list-style:none; padding:0; }
-    .leader-item { background:#1d2b12; border:1px solid #8bc34a; border-radius:1rem; padding:0.6rem 1rem; margin-bottom:0.5rem; display:flex; justify-content:space-between; color:#ffcc80; }
-    .leader-item.you { background:#2d4a1f; border-color:#ff9800; }
+    .quest-item, .achievement-item {
+      background:#1d2b12; border:1px solid #8bc34a; border-radius:1rem; padding:0.6rem 1rem; margin-bottom:0.5rem;
+      color:#ffcc80; font-size:0.85rem;
+    }
+    .quest-done { opacity:0.6; text-decoration:line-through; }
 
     .game-wrapper {
       width:100%; max-width:650px; background:rgba(20,30,15,0.75); backdrop-filter:blur(18px);
@@ -137,7 +136,15 @@
     }
     h1 { font-size:clamp(1.3rem,4vw,2rem); font-weight:700; background:linear-gradient(180deg,#dcedc8,#8d6e63); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; text-shadow:0 0 20px #8bc34a,0 0 35px #ff9800; }
 
-    .score-display { background:#1e2a14; border-radius:5rem; padding:0.7rem 2rem; border:2px solid #ff9800; box-shadow:0 0 25px #8bc34a; font-size:2rem; font-weight:bold; color:#ffcc80; display:flex; align-items:center; gap:0.5rem; }
+    .score-display {
+      background:#1e2a14; border-radius:5rem; padding:0.7rem 2rem; border:2px solid #ff9800;
+      box-shadow:0 0 25px #8bc34a; font-size:2rem; font-weight:bold; color:#ffcc80;
+      display:flex; align-items:center; gap:0.5rem;
+    }
+    .pixel-poop {
+      font-family:monospace; font-size:2rem; color:#8B4513; background:#FFD700;
+      border-radius:10px; padding:0 8px; text-shadow:none;
+    }
 
     #click-core {
       background:radial-gradient(circle at 30% 30%,#c5e0b4,#6d8c54); width:130px; height:130px; border-radius:50%;
@@ -164,11 +171,22 @@
     .boost-btn:disabled { opacity:0.4; cursor:not-allowed; }
     .boost-timer { color:#ffcc80; font-weight:bold; font-size:1rem; }
 
-    .card-grid { display:grid; grid-template-columns:1fr 1fr; gap:1rem; width:100%; }
-    .card-item { background:linear-gradient(145deg,#2d3a1f,#141e0a); border:2px solid #ff9800; border-radius:1.5rem; padding:1rem; text-align:center; font-size:3rem; box-shadow:0 0 15px rgba(255,152,0,0.3); }
-    .card-name { font-size:0.9rem; color:#ffcc80; font-weight:bold; }
+    .card-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:1rem; width:100%; }
+    .card-item {
+      background:linear-gradient(145deg,#2d3a1f,#141e0a); border:2px solid #ff9800; border-radius:1.5rem;
+      padding:1rem; text-align:center; font-size:3rem; box-shadow:0 0 15px rgba(255,152,0,0.3);
+      transition: all 0.3s;
+    }
+    .card-item.rare { border-color:#4488ff; box-shadow:0 0 20px #4488ff; }
+    .card-item.epic { border-color:#ff8800; box-shadow:0 0 20px #ff8800; }
+    .card-item.mythic { border-color:#aa44ff; box-shadow:0 0 20px #aa44ff; }
+    .card-name { font-size:0.9rem; font-weight:bold; margin-top:0.2rem; }
+    .card-rarity { font-size:0.65rem; margin-top:0.1rem; }
+    .rarity-rare { color:#4488ff; }
+    .rarity-epic { color:#ff8800; }
+    .rarity-mythic { color:#aa44ff; }
     .card-status { font-size:0.7rem; color:#aed581; }
-    .buy-card-btn { background:#8d6e63; border:1px solid #ffcc80; color:white; padding:0.3rem 1rem; border-radius:1rem; cursor:pointer; font-size:0.8rem; }
+    .buy-card-btn { background:#8d6e63; border:1px solid #ffcc80; color:white; padding:0.3rem 1rem; border-radius:1rem; cursor:pointer; font-size:0.8rem; margin-top:0.3rem; }
     .buy-card-btn:disabled { opacity:0.4; cursor:pointer; }
 
     .upgrade-card { background:linear-gradient(145deg,#2d3a1f,#141e0a); border-radius:2rem; padding:0.8rem 1rem; display:flex; justify-content:space-between; align-items:center; border:2px solid #8bc34a; box-shadow:0 0 12px #ff9800; width:100%; }
@@ -186,6 +204,7 @@
       position:fixed; top:20px; left:50%; transform:translateX(-50%); background:#ff4444; color:white;
       padding:1rem 2rem; border-radius:2rem; z-index:999; font-weight:bold; box-shadow:0 0 30px #ff0000; animation:toastIn 0.3s ease;
     }
+    .toast.green { background:#4caf50; }
     @keyframes toastIn { from{opacity:0;top:0;} to{opacity:1;top:20px;} }
 
     .easter-egg {
@@ -199,7 +218,6 @@
       padding:1.5rem; margin-top:2rem; width:100%; max-width:650px; color:#ffcc80; z-index:2;
     }
     .admin-panel h3 { text-align:center; }
-    .admin-panel input, .admin-panel select { width:100%; margin:0.3rem 0; background:#1d2b12; border:1px solid #ff9800; border-radius:2rem; padding:0.5rem 1rem; color:white; }
     .admin-row { display:flex; gap:0.5rem; align-items:center; margin:0.5rem 0; }
     .admin-btn-small { background:#ff9800; border:none; color:white; padding:0.4rem 1rem; border-radius:2rem; cursor:pointer; }
 
@@ -214,6 +232,26 @@
     }
     .anti-cheat-indicator.penalty { border-color:#ff4444; color:#ff4444; animation: pulse 0.5s infinite; }
     @keyframes pulse { 0%{opacity:1;} 50%{opacity:0.5;} 100%{opacity:1;} }
+
+    .sound-toggle {
+      position:fixed; bottom:1rem; right:1rem;
+      background:rgba(0,0,0,0.7); border-radius:2rem; padding:0.5rem 1rem;
+      z-index:100; cursor:pointer; border:1px solid #ffcc80; color:#ffcc80; font-size:1.2rem;
+    }
+    .sound-toggle.muted { opacity:0.5; }
+
+    .numpad {
+      display:grid; grid-template-columns:repeat(3,1fr); gap:0.5rem; margin-top:0.5rem;
+    }
+    .numpad-btn {
+      background:#1d2b12; border:2px solid #ff9800; color:#ffcc80; font-size:1.5rem;
+      padding:0.8rem; border-radius:1rem; cursor:pointer; transition:0.2s;
+    }
+    .numpad-btn:hover { background:#ff9800; color:#1e3000; }
+    .numpad-display {
+      background:#0a0a0a; border:2px solid #ff9800; border-radius:1rem; padding:0.8rem;
+      text-align:center; font-size:2rem; color:#ff9800; letter-spacing:0.5rem; margin-bottom:0.5rem;
+    }
   </style>
 </head>
 <body>
@@ -222,12 +260,14 @@
 <div class="modal-overlay" id="modalOverlay">
   <div class="modal-container">
     <div class="modal-content skin-modal" id="skinModalContent" style="display:none;"><button class="close-modal" id="closeSkinModal">&times;</button><h3 style="color:#ffcc80;text-align:center;">Скины</h3><div class="skin-grid" id="skinGrid"></div></div>
-    <div class="modal-content leaderboard-modal" id="leaderboardModalContent" style="display:none;"><button class="close-modal" id="closeLeaderboardModal">&times;</button><h3 style="color:#ffcc80;text-align:center;">🏆 Мировой рейтинг</h3><ul class="leader-list" id="leaderList"></ul></div>
     <div class="modal-content account-modal" id="accountModalContent" style="display:none;"><button class="close-modal" id="closeAccountModal">&times;</button><h3 style="color:#ffcc80;">👤 Аккаунт</h3><p id="accountNameDisplay" style="margin:1rem 0;"></p><button class="auth-btn" id="logoutBtn">🚪 Выйти</button><span style="font-size:2rem;">📱</span></div>
     <div class="modal-content messenger-modal" id="messengerModalContent" style="display:none;"><button class="close-modal" id="closeMessengerModal">&times;</button><h3 style="color:#ffcc80;">💬 Мессенджер</h3><p style="margin:1rem 0;">📢 Подпишись на канал и будь в центре новостей первее всех! 📢</p><p><a href="https://max.ru/join/fBDzHfDQn03gGn94sdrmWZwTQ-sM5dk-on07HWtBx7w" target="_blank" rel="noopener" class="messenger-link">🔗 Открыть канал в Max</a></p><p style="margin-top:1rem;font-size:2rem;">💩🕊️🌈✨</p></div>
+    <div class="modal-content daily-modal" id="dailyModalContent" style="display:none;"><button class="close-modal" id="closeDailyModal">&times;</button><h3 style="color:#ffcc80;text-align:center;">📋 Ежедневные задания</h3><p style="text-align:center;font-size:0.7rem;color:#aed581;" id="daily-reset-timer"></p><div id="dailyQuestList"></div></div>
+    <div class="modal-content achievements-modal" id="achievementsModalContent" style="display:none;"><button class="close-modal" id="closeAchievementsModal">&times;</button><h3 style="color:#ffcc80;text-align:center;">🏅 Достижения</h3><div id="achievementList"></div></div>
     <div class="tab-panel" id="tabPanel">
       <button class="tab-btn active" data-tab="skins">Скины</button>
-      <button class="tab-btn" data-tab="leaders">Лидеры</button>
+      <button class="tab-btn" data-tab="daily">Задания</button>
+      <button class="tab-btn" data-tab="achievements">Достижения</button>
       <button class="tab-btn" data-tab="account">Аккаунт</button>
       <button class="tab-btn" data-tab="messenger">💬</button>
     </div>
@@ -236,7 +276,7 @@
 
 <div class="game-wrapper" id="gameWrapper">
   <h1>💩 ВЫДАВИ КАКАШКУ! 💩</h1>
-  <div class="score-display"><span>💩</span><span id="coin-counter">0</span></div>
+  <div class="score-display"><span class="pixel-poop">💩</span><span id="coin-counter">0</span></div>
   <div style="position:relative;" id="click-container"><div id="click-core">🕊️</div></div>
   <div class="boost-bar"><span style="color:#ffcc80;">⚡ БУСТ x5</span><span class="boost-timer" id="boostTimer">00:00</span><button class="boost-btn" id="boostBtn">🔥</button></div>
   <div class="boost-bar rainbow-active" id="rainbowBoostBar" style="display:none;"><span style="color:#fff;">🌈 РАДУГА x5</span><span class="boost-timer" id="rainbowBoostTimer">00:00</span><button class="boost-btn" id="rainbowBoostBtn">🌈</button></div>
@@ -247,8 +287,9 @@
     <div class="stat-item"><span>🕒 Время</span><span class="stat-value" id="stat-playtime">0м</span></div>
   </div>
   <div class="card-grid">
-    <div class="card-item"><span>✨</span><div class="card-name">OG</div><div class="card-status" id="ogStatus">💩 10000</div><button class="buy-card-btn" id="buyOgBtn">Купить</button></div>
-    <div class="card-item"><span>🌈</span><div class="card-name">Радужный</div><div class="card-status" id="rainbowStatus">💩 15000</div><button class="buy-card-btn" id="buyRainbowBtn">Купить</button></div>
+    <div class="card-item rare" id="ogCard"><span>✨</span><div class="card-name">OG</div><div class="card-rarity rarity-rare">⚡ Редкая</div><div class="card-status" id="ogStatus">💩 10000</div><button class="buy-card-btn" id="buyOgBtn">Купить</button></div>
+    <div class="card-item mythic" id="rainbowCard"><span>🌈</span><div class="card-name">Радужный</div><div class="card-rarity rarity-mythic">🌀 Мифик</div><div class="card-status" id="rainbowStatus">💩 15000</div><button class="buy-card-btn" id="buyRainbowBtn">Купить</button></div>
+    <div class="card-item epic" id="sonicCard"><span>⚡</span><div class="card-name">Сверхзвуковой клик</div><div class="card-rarity rarity-epic">⚜️ Эпик</div><div class="card-status" id="sonicStatus">💩 25000</div><button class="buy-card-btn" id="buySonicBtn">Купить</button></div>
   </div>
   <div class="upgrade-card">
     <div class="upgrade-info"><h4 style="color:#ffb74d;">🚽 Расстройство</h4><p style="color:#c5e0b4;">+1 какашка за клик</p><div class="progress-dots" id="multiplierProgress"></div></div>
@@ -258,27 +299,35 @@
     <div class="upgrade-info"><h4 style="color:#ffb74d;">🤖 Авто-кликер</h4><p style="color:#c5e0b4;">+0.5 какашек/сек</p><div class="progress-dots" id="autoProgress"></div></div>
     <button class="buy-btn" id="btn-autoclick">🕊️ <span id="cost-autoclick">50</span></button>
   </div>
-  <button class="reset-btn" id="reset-stats">🔄 Сбросить прогресс</button>
+  <div style="display:flex; gap:0.5rem; align-items:center; flex-wrap:wrap;">
+    <button class="reset-btn" id="reset-stats">🔄 Сбросить прогресс</button>
+    <button class="reset-btn" id="prestige-btn" style="border-color:#ffcc80;color:#ffcc80;">⬆️ Престиж (100к)</button>
+  </div>
 </div>
 
 <div class="admin-panel" id="adminPanel">
-  <h3>🔐 Админ-панель</h3>
-  <input type="password" id="adminPassword" placeholder="Пароль">
-  <button class="admin-btn-small" id="adminLoginBtn">Войти</button>
+  <h3>🔐 Комбинации</h3>
+  <div class="numpad-display" id="numpadDisplay">····</div>
+  <div class="numpad" id="numpad"></div>
+  <button class="admin-btn-small" id="numpadSubmit" style="width:100%;margin-top:0.5rem;">➡️ Ввод</button>
 </div>
 
 <div class="anti-cheat-indicator" id="antiCheatIndicator"><span>🛡️</span><span id="antiCheatStatus">Защита активна</span></div>
+<div class="sound-toggle" id="soundToggle">🔊</div>
 
 <script>
   (() => {
-    // ⚙️ НАСТРОЙКИ GitHub Gist
-    const GIST_ID = '28b3ead8a440fa4a941efe5e3ac30b27'
-    const GITHUB_TOKEN = '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'
+    // ========== НАСТРОЙКИ GitHub Gist ==========
+    const GIST_ID = '28b3ead8a440fa4a941efe5e3ac30b27';
+    const GITHUB_TOKEN = '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';
     
     const USERS_DB_KEY = 'pigeon_users_db';
     const SESSION_KEY = 'pigeon_session';
+    const LAST_USERS_KEY = 'pigeon_last_users';
     let currentUser = null;
-    let leaderboardCache = {};
+    let soundEnabled = true;
+    let numpadCode = '';
+    let usedPromoCodes = {};
 
     const allSkins = [
       { emoji: '🕊️', name: 'Голубь', price: 0 },
@@ -289,6 +338,19 @@
       { emoji: '🐱‍🚀', name: 'Космокот', price: 10000 }
     ];
 
+    const dailyQuests = [
+      { id: 'clicks100', desc: 'Сделать 100 кликов', target: 100, reward: 500 },
+      { id: 'upgrade50', desc: 'Купить 50 улучшений', target: 50, reward: 1000 },
+      { id: 'boost', desc: 'Активировать буст', target: 1, reward: 500 },
+    ];
+
+    const achievements = [
+      { id: 'clicks1k', desc: '1000 кликов', check: s => s.totalClicks >= 1000, reward: 5000, claimed: false },
+      { id: 'clicks10k', desc: '10 000 кликов', check: s => s.totalClicks >= 10000, reward: 20000, claimed: false },
+      { id: 'clicks100k', desc: '100 000 кликов', check: s => s.totalClicks >= 100000, reward: 100000, claimed: false },
+      { id: 'allSkins', desc: 'Купить все скины', check: s => s.ownedSkins.length >= allSkins.length, reward: 50000, claimed: false },
+    ];
+
     const defaultState = () => ({
       coins:0, totalClicks:0, clickMultiplier:1, autoCoinsPerSec:0,
       multiplierCost:15, autoclickCost:50,
@@ -297,258 +359,384 @@
       playStartTime:Date.now(), currentSkin:'🕊️', ownedSkins:['🕊️'],
       lastBoostTime:0, boostActive:false, boostEndTime:0,
       lastRainbowBoostTime:0, rainbowBoostActive:false, rainbowBoostEndTime:0,
-      ogPurchased:false, rainbowPurchased:false
+      ogPurchased:false, rainbowPurchased:false, sonicPurchased:false,
+      prestigeCount:0, prestigeBonus:0,
+      dailyProgress: { clicks100:0, upgrade50:0, boost:0 },
+      dailyResetDate: new Date().toDateString(),
+      claimedAchievements: [],
+      promoUsed: false,
     });
     let state = defaultState();
 
-    // 📡 Функции для работы с GitHub Gist
-    async function loadLeaderboard() {
-      try {
-        const response = await fetch(`https://api.github.com/gists/${GIST_ID}`, {
-          headers: { 'Authorization': `token ${GITHUB_TOKEN}` }
-        });
-        const gist = await response.json();
-        const content = gist.files?.['leaderboard.json']?.content || '{}';
-        leaderboardCache = JSON.parse(content);
-        return leaderboardCache;
-      } catch (error) {
-        console.error('Ошибка загрузки лидерборда:', error);
-        return leaderboardCache;
-      }
-    }
-
-    async function saveToLeaderboard(username, data) {
-      leaderboardCache[username] = data;
-      try {
-        await fetch(`https://api.github.com/gists/${GIST_ID}`, {
-          method: 'PATCH',
-          headers: {
-            'Authorization': `token ${GITHUB_TOKEN}`,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            files: {
-              'leaderboard.json': {
-                content: JSON.stringify(leaderboardCache, null, 2)
-              }
-            }
-          })
-        });
-      } catch (error) {
-        console.error('Ошибка сохранения в лидерборд:', error);
-      }
-    }
-
-    async function pushToLeaderboard() {
-      if (!currentUser) return;
-      await saveToLeaderboard(currentUser.username, {
-        coins: Math.floor(state.coins),
-        totalClicks: state.totalClicks,
-        skin: state.currentSkin,
-        lastUpdate: Date.now()
-      });
-    }
-
-    async function updateLeaderboardUI() {
-      await loadLeaderboard();
-      const stats = Object.entries(leaderboardCache)
-        .map(([username, info]) => ({ username, coins: info.coins || 0 }))
-        .sort((a, b) => b.coins - a.coins);
-      
-      const list = document.getElementById('leaderList');
-      if (stats.length === 0) {
-        list.innerHTML = '<li class="leader-item" style="justify-content:center;">Пока никто не нажал ни одной какашки 😢</li>';
-        return;
-      }
-      
-      list.innerHTML = stats
-        .map((s, i) => `<li class="leader-item ${currentUser && s.username === currentUser.username ? 'you' : ''}"><span>${i+1}. ${s.username} ${currentUser && s.username === currentUser.username ? '👈' : ''}</span><span>💩${Math.floor(s.coins)}</span></li>`)
-        .join('');
-    }
-
+    // ========== АВТОРИЗАЦИЯ ==========
     function getUsersDB() { return JSON.parse(localStorage.getItem(USERS_DB_KEY) || '{}'); }
     function saveUsersDB(db) { localStorage.setItem(USERS_DB_KEY, JSON.stringify(db)); }
     function loadSession() { const s=localStorage.getItem(SESSION_KEY); if(s){try{currentUser=JSON.parse(s);}catch(e){currentUser=null;}} updateCloudUI(); }
-    function loginUser(u) { currentUser={username:u}; localStorage.setItem(SESSION_KEY,JSON.stringify(currentUser)); updateCloudUI(); loadUserProgress(); if(state.totalClicks===0 && state.coins===0) { state.coins+=100; saveUserProgress(); } pushToLeaderboard(); }
+    function loginUser(u) { currentUser={username:u}; localStorage.setItem(SESSION_KEY,JSON.stringify(currentUser)); updateCloudUI(); loadUserProgress(); if(state.totalClicks===0 && state.coins===0) { state.coins+=100; saveUserProgress(); } saveLastUser(u); loadUsedPromos(); }
     function logoutUser() { saveUserProgress(); currentUser=null; localStorage.removeItem(SESSION_KEY); updateCloudUI(); state=defaultState(); updateUI(); }
     function updateCloudUI() { document.getElementById('cloudLabel').textContent = currentUser?.username || 'Войти'; }
     function getUserKey() { return currentUser ? `pigeon_progress_${currentUser.username}` : null; }
-    function saveUserProgress() { if(!currentUser) return; const k=getUserKey(); if(k) localStorage.setItem(k,JSON.stringify(state)); pushToLeaderboard(); }
+    function saveUserProgress() { if(!currentUser) return; const k=getUserKey(); if(k) localStorage.setItem(k,JSON.stringify(state)); }
+    function saveLastUser(u) { let last = JSON.parse(localStorage.getItem(LAST_USERS_KEY) || '[]'); last = last.filter(x => x !== u); last.unshift(u); if (last.length > 3) last.pop(); localStorage.setItem(LAST_USERS_KEY, JSON.stringify(last)); }
+    function getLastUsers() { return JSON.parse(localStorage.getItem(LAST_USERS_KEY) || '[]'); }
+    function loadUsedPromos() { if(currentUser) { const saved = localStorage.getItem(`promo_${currentUser.username}`); usedPromoCodes[currentUser.username] = saved === 'true'; } }
     function loadUserProgress() {
       if(!currentUser) { state=defaultState(); return; }
       const k=getUserKey(); const saved=localStorage.getItem(k);
-      if(saved){
-        try{
-          const d=JSON.parse(saved);
-          state = { ...defaultState(), ...d };
-          if(!state.playStartTime) state.playStartTime=Date.now();
-          if(!state.ownedSkins) state.ownedSkins=['🕊️'];
-          if(!state.currentSkin) state.currentSkin='🕊️';
-          if(state.multiplierBonusCount===undefined) state.multiplierBonusCount=0;
-          if(state.autoBonusCount===undefined) state.autoBonusCount=0;
-        }catch(e){state=defaultState();}
-      } else state=defaultState();
+      if(saved){ try{ const d=JSON.parse(saved); state = { ...defaultState(), ...d }; if(!state.playStartTime) state.playStartTime=Date.now(); if(!state.ownedSkins) state.ownedSkins=['🕊️']; if(!state.currentSkin) state.currentSkin='🕊️'; if(!state.dailyProgress) state.dailyProgress = { clicks100:0, upgrade50:0, boost:0 }; if(!state.dailyResetDate) state.dailyResetDate = new Date().toDateString(); if(!state.claimedAchievements) state.claimedAchievements = []; if(!state.prestigeCount) state.prestigeCount = 0; if(!state.prestigeBonus) state.prestigeBonus = 0; if(state.sonicPurchased===undefined) state.sonicPurchased=false; checkDailyReset(); } catch(e){state=defaultState();} } else state=defaultState();
+      loadUsedPromos();
     }
+    function checkDailyReset() { const today = new Date().toDateString(); if (state.dailyResetDate !== today) { state.dailyProgress = { clicks100:0, upgrade50:0, boost:0 }; state.dailyResetDate = today; saveUserProgress(); } }
 
-    const antiCheat = {
-      clickTimes: [], maxClicksPerSecond: 15, violationLevel: 0, penaltyActive: false, penaltyEndTime: 0, lastPurchaseTime: 0,
-      checkClick() {
-        const now = Date.now(); this.clickTimes.push(now); this.clickTimes = this.clickTimes.filter(t => now - t < 1000);
-        if (this.clickTimes.length > this.maxClicksPerSecond) { this.violationLevel++; this.applyPenalty(); return false; }
-        if (this.violationLevel > 0 && this.clickTimes.length <= this.maxClicksPerSecond) { this.violationLevel = Math.max(0, this.violationLevel - 0.05); }
-        return true;
-      },
-      applyPenalty() {
-        if (this.penaltyActive) return;
-        let penaltyPercent = 0; let message = '';
-        if (this.violationLevel >= 3) { penaltyPercent = 1; message = '💀 ТРЕТЬЕ НАРУШЕНИЕ! ВСЕ КАКАШКИ КОНФИСКОВАНЫ!'; state.coins = 0; this.violationLevel = 0; }
-        else if (this.violationLevel >= 2) { penaltyPercent = 0.3; message = '⚠️ ВТОРОЕ НАРУШЕНИЕ! -30% КАКАШЕК!'; state.coins -= Math.floor(state.coins * penaltyPercent); }
-        else { penaltyPercent = 0.1; message = '⚠️ ПЕРВОЕ ПРЕДУПРЕЖДЕНИЕ! -10% КАКАШЕК!'; state.coins -= Math.floor(state.coins * penaltyPercent); }
-        this.penaltyActive = true; this.penaltyEndTime = Date.now() + 30000;
-        showToast(message); saveUserProgress(); updateUI();
-        setTimeout(() => { this.penaltyActive = false; if (this.violationLevel >= 3) this.violationLevel = 0; showToast('✅ Штраф снят. Играйте честно!'); }, 30000);
-      },
-      checkUpgrade() { if (this.penaltyActive) { showToast('🚫 Вы заблокированы за автокликер!'); return false; } return true; },
-      checkPurchaseSpeed() { const now = Date.now(); if (now - this.lastPurchaseTime < 500) { this.violationLevel++; if (this.violationLevel >= 5) this.applyPenalty(); showToast('⚠️ Слишком быстрые покупки!'); return false; } this.lastPurchaseTime = now; return true; }
+    // ========== АНТИ-ЧИТ ==========
+    const antiCheat = { clickTimes: [], maxClicksPerSecond: 15, violationLevel: 0, penaltyActive: false, penaltyEndTime: 0,
+      checkClick() { if (this.penaltyActive && Date.now() < this.penaltyEndTime) { showToast('🚫 Вы заблокированы!'); return false; } if (this.penaltyActive && Date.now() >= this.penaltyEndTime) { this.penaltyActive = false; } const now = Date.now(); this.clickTimes.push(now); this.clickTimes = this.clickTimes.filter(t => now - t < 1000); if (this.clickTimes.length > this.maxClicksPerSecond) { this.violationLevel++; this.applyPenalty(); return false; } if (this.violationLevel > 0 && this.clickTimes.length <= this.maxClicksPerSecond) { this.violationLevel = Math.max(0, this.violationLevel - 0.05); } return true; },
+      applyPenalty() { if (this.penaltyActive && Date.now() < this.penaltyEndTime) return; let msg = ''; if (this.violationLevel >= 3) { msg = '💀 ВСЕ КАКАШКИ КОНФИСКОВАНЫ!'; state.coins = 0; this.violationLevel = 0; } else if (this.violationLevel >= 2) { msg = '⚠️ -30% КАКАШЕК!'; state.coins -= Math.floor(state.coins * 0.3); } else { msg = '⚠️ -10% КАКАШЕК!'; state.coins -= Math.floor(state.coins * 0.1); } this.penaltyActive = true; this.penaltyEndTime = Date.now() + 30000; showToast(msg); saveUserProgress(); updateUI(); setTimeout(() => { this.penaltyActive = false; showToast('✅ Штраф снят.'); updateUI(); }, 30000); }
     };
 
+    // ========== ЗВУКИ ==========
     let audioCtx = null;
     function initAudio() { if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
-    function playSound(type) {
-      try {
-        initAudio(); const now = audioCtx.currentTime; const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain(); osc.connect(gain); gain.connect(audioCtx.destination);
-        if (type === 'click') { osc.frequency.setValueAtTime(800, now); osc.frequency.exponentialRampToValueAtTime(400, now+0.1); gain.gain.setValueAtTime(0.3, now); gain.gain.exponentialRampToValueAtTime(0.01, now+0.1); osc.start(now); osc.stop(now+0.1); }
-        else if (type === 'purchase') { osc.type='square'; osc.frequency.setValueAtTime(600, now); osc.frequency.setValueAtTime(900, now+0.1); gain.gain.setValueAtTime(0.2, now); gain.gain.exponentialRampToValueAtTime(0.01, now+0.3); osc.start(now); osc.stop(now+0.3); }
-        else if (type === 'card') { osc.type='triangle'; osc.frequency.setValueAtTime(400, now); osc.frequency.linearRampToValueAtTime(1200, now+0.5); gain.gain.setValueAtTime(0.4, now); gain.gain.exponentialRampToValueAtTime(0.01, now+0.6); osc.start(now); osc.stop(now+0.6); }
-        else if (type === 'glitch') { for(let i=0;i<10;i++){const g=audioCtx.createGain();const o=audioCtx.createOscillator();o.type='sawtooth';o.frequency.setValueAtTime(100+Math.random()*500,now+i*0.05);g.gain.setValueAtTime(0.1,now+i*0.05);g.gain.exponentialRampToValueAtTime(0.01,now+i*0.05+0.05);o.connect(g);g.connect(audioCtx.destination);o.start(now+i*0.05);o.stop(now+i*0.05+0.05);} }
-      } catch(e) {}
-    }
+    function playSound(type) { if (!soundEnabled) return; try { initAudio(); const now = audioCtx.currentTime; const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain(); osc.connect(gain); gain.connect(audioCtx.destination); if (type === 'click') { osc.frequency.setValueAtTime(800, now); osc.frequency.exponentialRampToValueAtTime(400, now+0.1); gain.gain.setValueAtTime(0.3, now); gain.gain.exponentialRampToValueAtTime(0.01, now+0.1); osc.start(now); osc.stop(now+0.1); } else if (type === 'purchase') { osc.type='square'; osc.frequency.setValueAtTime(600, now); osc.frequency.setValueAtTime(900, now+0.1); gain.gain.setValueAtTime(0.2, now); gain.gain.exponentialRampToValueAtTime(0.01, now+0.3); osc.start(now); osc.stop(now+0.3); } else if (type === 'card') { osc.type='triangle'; osc.frequency.setValueAtTime(400, now); osc.frequency.linearRampToValueAtTime(1200, now+0.5); gain.gain.setValueAtTime(0.4, now); gain.gain.exponentialRampToValueAtTime(0.01, now+0.6); osc.start(now); osc.stop(now+0.6); } else if (type === 'glitch') { for(let i=0;i<10;i++){const g=audioCtx.createGain();const o=audioCtx.createOscillator();o.type='sawtooth';o.frequency.setValueAtTime(100+Math.random()*500,now+i*0.05);g.gain.setValueAtTime(0.1,now+i*0.05);g.gain.exponentialRampToValueAtTime(0.01,now+i*0.05+0.05);o.connect(g);g.connect(audioCtx.destination);o.start(now+i*0.05);o.stop(now+i*0.05+0.05);} } else if (type === 'achievement') { osc.type='triangle'; osc.frequency.setValueAtTime(500, now); osc.frequency.linearRampToValueAtTime(1500, now+0.8); gain.gain.setValueAtTime(0.5, now); gain.gain.exponentialRampToValueAtTime(0.01, now+1); osc.start(now); osc.stop(now+1); } } catch(e) {} }
 
+    // ========== UI ==========
     function updateUI() {
       document.getElementById('coin-counter').textContent = Math.floor(state.coins);
       document.getElementById('stat-total-clicks').textContent = state.totalClicks;
-      let perClick = state.clickMultiplier; if (state.ogPurchased) perClick += 5; if (state.rainbowPurchased) perClick += 10; if (state.boostActive || state.rainbowBoostActive) perClick *= 5;
+      let perClick = state.clickMultiplier + state.prestigeBonus;
+      if (state.ogPurchased) perClick += 10;
+      if (state.rainbowPurchased) perClick += 10;
+      if (state.boostActive || state.rainbowBoostActive) perClick *= 5;
       document.getElementById('stat-per-click').textContent = perClick;
-      document.getElementById('stat-auto-per-sec').textContent = state.autoCoinsPerSec.toFixed(1);
-      const elapsed = Math.floor((Date.now()-state.playStartTime)/1000); const hours = Math.floor(elapsed/3600), mins = Math.floor((elapsed%3600)/60), secs = elapsed%60;
+      let autoVal = state.autoCoinsPerSec;
+      if (state.sonicPurchased) autoVal += 10;
+      document.getElementById('stat-auto-per-sec').textContent = autoVal.toFixed(1);
+      const elapsed = Math.floor((Date.now()-state.playStartTime)/1000);
+      const hours = Math.floor(elapsed/3600), mins = Math.floor((elapsed%3600)/60), secs = elapsed%60;
       document.getElementById('stat-playtime').textContent = hours>0 ? `${hours}ч ${mins}м ${secs}с` : `${mins}м ${secs}с`;
-      document.getElementById('cost-multiplier').textContent = state.multiplierCost; document.getElementById('cost-autoclick').textContent = state.autoclickCost;
-      document.getElementById('btn-multiplier').disabled = state.coins < state.multiplierCost; document.getElementById('btn-autoclick').disabled = state.coins < state.autoclickCost;
+      document.getElementById('cost-multiplier').textContent = state.multiplierCost;
+      document.getElementById('cost-autoclick').textContent = state.autoclickCost;
+      document.getElementById('btn-multiplier').disabled = state.coins < state.multiplierCost;
+      document.getElementById('btn-autoclick').disabled = state.coins < state.autoclickCost;
+      document.getElementById('prestige-btn').disabled = state.coins < 100000;
       updateBoostUI(); updateRainbowBoostUI(); updateCardUI(); updateSkinGrid();
       document.getElementById('click-core').textContent = state.currentSkin;
-      renderProgress(document.getElementById('multiplierProgress'), state.multiplierBonusCount); renderProgress(document.getElementById('autoProgress'), state.autoBonusCount);
+      renderProgress(document.getElementById('multiplierProgress'), state.multiplierBonusCount);
+      renderProgress(document.getElementById('autoProgress'), state.autoBonusCount);
+      checkAchievements();
     }
 
     function updateCardUI() {
-      if (state.ogPurchased) { document.getElementById('ogStatus').textContent='✅ +5 клик'; document.getElementById('buyOgBtn').disabled=true; document.getElementById('buyOgBtn').textContent='Куплено'; }
-      else { document.getElementById('ogStatus').textContent='💩 10000'; document.getElementById('buyOgBtn').disabled=state.coins<10000; document.getElementById('buyOgBtn').textContent='Купить'; }
-      if (state.rainbowPurchased) { document.getElementById('rainbowStatus').textContent='✅ +10 клик'; document.getElementById('buyRainbowBtn').disabled=true; document.getElementById('buyRainbowBtn').textContent='Куплено'; document.getElementById('rainbowBoostBar').style.display='flex'; }
-      else { document.getElementById('rainbowStatus').textContent='💩 15000'; document.getElementById('buyRainbowBtn').disabled=state.coins<15000; document.getElementById('buyRainbowBtn').textContent='Купить'; document.getElementById('rainbowBoostBar').style.display='none'; }
+      const ogCard = document.getElementById('ogCard');
+      const rainbowCard = document.getElementById('rainbowCard');
+      const sonicCard = document.getElementById('sonicCard');
+      
+      if (state.ogPurchased) { document.getElementById('ogStatus').textContent='✅ +10 клик'; document.getElementById('buyOgBtn').disabled=true; document.getElementById('buyOgBtn').textContent='Куплено'; ogCard.style.background='linear-gradient(145deg,#1a2a3f,#0a1a2f)'; }
+      else { document.getElementById('ogStatus').textContent='💩 10000'; document.getElementById('buyOgBtn').disabled=state.coins<10000; document.getElementById('buyOgBtn').textContent='Купить'; ogCard.style.background=''; }
+      
+      if (state.rainbowPurchased) { document.getElementById('rainbowStatus').textContent='✅ +10 клик'; document.getElementById('buyRainbowBtn').disabled=true; document.getElementById('buyRainbowBtn').textContent='Куплено'; document.getElementById('rainbowBoostBar').style.display='flex'; rainbowCard.style.background='linear-gradient(145deg,#2a1a3f,#1a0a2f)'; }
+      else { document.getElementById('rainbowStatus').textContent='💩 15000'; document.getElementById('buyRainbowBtn').disabled=state.coins<15000; document.getElementById('buyRainbowBtn').textContent='Купить'; document.getElementById('rainbowBoostBar').style.display='none'; rainbowCard.style.background=''; }
+      
+      if (state.sonicPurchased) { document.getElementById('sonicStatus').textContent='✅ +10 авто'; document.getElementById('buySonicBtn').disabled=true; document.getElementById('buySonicBtn').textContent='Куплено'; sonicCard.style.background='linear-gradient(145deg,#2a1f0a,#1f1a0a)'; }
+      else { document.getElementById('sonicStatus').textContent='💩 25000'; document.getElementById('buySonicBtn').disabled=state.coins<25000; document.getElementById('buySonicBtn').textContent='Купить'; sonicCard.style.background=''; }
     }
 
     function updateSkinGrid() {
       const skinGrid = document.getElementById('skinGrid'); if (!skinGrid) return; skinGrid.innerHTML = '';
       const owned = state.ownedSkins || ['🕊️'];
-      allSkins.forEach(s => {
-        const d = document.createElement('div'); d.className = `skin-item ${s.emoji === state.currentSkin ? 'equipped' : ''} ${!owned.includes(s.emoji) ? 'locked' : ''}`;
-        d.innerHTML = `<span>${s.emoji}</span><div style="font-size:0.7rem;color:#ffcc80;">${s.name}</div>${owned.includes(s.emoji) ? '<div class="skin-owned">✅</div>' : `<div class="skin-price">💩${s.price}</div>`}`;
-        d.addEventListener('click', () => { if (!currentUser) { showToast('Сначала зарегистрируйтесь!'); return; } if (!antiCheat.checkUpgrade()) return; if (owned.includes(s.emoji)) { state.currentSkin = s.emoji; saveUserProgress(); updateUI(); playSound('click'); } else if (state.coins >= s.price) { state.coins -= s.price; state.ownedSkins.push(s.emoji); state.currentSkin = s.emoji; saveUserProgress(); updateUI(); playSound('card'); } else alert('Недостаточно какашек!'); });
-        skinGrid.appendChild(d);
+      allSkins.forEach(s => { const d = document.createElement('div'); d.className = `skin-item ${s.emoji === state.currentSkin ? 'equipped' : ''} ${!owned.includes(s.emoji) ? 'locked' : ''}`; d.innerHTML = `<span>${s.emoji}</span><div style="font-size:0.7rem;color:#ffcc80;">${s.name}</div>${owned.includes(s.emoji) ? '<div class="skin-owned">✅</div>' : `<div class="skin-price">💩${s.price}</div>`}`; d.addEventListener('click', () => { if (!currentUser) { showToast('Сначала зарегистрируйтесь!'); return; } if (owned.includes(s.emoji)) { state.currentSkin = s.emoji; saveUserProgress(); updateUI(); playSound('click'); } else if (state.coins >= s.price) { state.coins -= s.price; state.ownedSkins.push(s.emoji); state.currentSkin = s.emoji; saveUserProgress(); updateUI(); playSound('card'); } else alert('Недостаточно какашек!'); }); skinGrid.appendChild(d); });
+    }
+
+    function updateBoostUI() { const now = Date.now(); if (state.boostActive && now < state.boostEndTime) { const rem = Math.ceil((state.boostEndTime - now)/1000); document.getElementById('boostTimer').textContent = `${Math.floor(rem/60)}:${(rem%60).toString().padStart(2,'0')}`; document.getElementById('boostBtn').disabled = true; } else { state.boostActive = false; const cd = 24*60*60*1000; const since = now - (state.lastBoostTime||0); if (since < cd) { const rem = cd - since; document.getElementById('boostTimer').textContent = `${Math.floor(rem/3600000)}ч`; document.getElementById('boostBtn').disabled = true; } else { document.getElementById('boostTimer').textContent = 'Готов'; document.getElementById('boostBtn').disabled = false; } } }
+    function updateRainbowBoostUI() { if (!state.rainbowPurchased) return; const now = Date.now(); if (state.rainbowBoostActive && now < state.rainbowBoostEndTime) { const rem = Math.ceil((state.rainbowBoostEndTime - now)/1000); document.getElementById('rainbowBoostTimer').textContent = `${Math.floor(rem/60)}:${(rem%60).toString().padStart(2,'0')}`; document.getElementById('rainbowBoostBtn').disabled = true; document.body.classList.add('rainbow-mode'); if (!window.rainbowInterval) { window.rainbowInterval = setInterval(spawnRainbowEmoji, 200); } } else { state.rainbowBoostActive = false; document.body.classList.remove('rainbow-mode'); if (window.rainbowInterval) { clearInterval(window.rainbowInterval); window.rainbowInterval = null; } const cd = 24*60*60*1000; const since = now - (state.lastRainbowBoostTime||0); if (since < cd) { const rem = cd - since; document.getElementById('rainbowBoostTimer').textContent = `${Math.floor(rem/3600000)}ч`; document.getElementById('rainbowBoostBtn').disabled = true; } else { document.getElementById('rainbowBoostTimer').textContent = 'Готов'; document.getElementById('rainbowBoostBtn').disabled = false; } } }
+    function spawnRainbowEmoji() { const emoji = document.createElement('div'); emoji.className = 'flying-emoji'; emoji.textContent = '💩'; emoji.style.left = Math.random()*80 + '%'; emoji.style.top = Math.random()*80 + '%'; document.body.appendChild(emoji); setTimeout(() => emoji.remove(), 2000); }
+
+    function renderDailyQuests() { const container = document.getElementById('dailyQuestList'); const progress = state.dailyProgress || {}; container.innerHTML = dailyQuests.map(q => { const done = progress[q.id] >= q.target; return `<div class="quest-item ${done ? 'quest-done' : ''}">${q.desc} (${progress[q.id]||0}/${q.target}) ${done ? '✅' : '— 💩'+q.reward}</div>`; }).join(''); const now = new Date(); const tomorrow = new Date(now); tomorrow.setDate(tomorrow.getDate()+1); tomorrow.setHours(0,0,0,0); const diff = tomorrow - now; const h = Math.floor(diff/3600000), m = Math.floor((diff%3600000)/60000); document.getElementById('daily-reset-timer').textContent = `Сброс через ${h}ч ${m}м`; }
+    function checkDailyQuest(id) { if (!state.dailyProgress) state.dailyProgress = {}; if (state.dailyProgress[id] === undefined) state.dailyProgress[id] = 0; state.dailyProgress[id]++; const quest = dailyQuests.find(q => q.id === id); if (quest && state.dailyProgress[id] === quest.target) { state.coins += quest.reward; showToast(`✅ Задание выполнено! +${quest.reward} 💩`, true); saveUserProgress(); updateUI(); } saveUserProgress(); }
+    function renderAchievements() { const container = document.getElementById('achievementList'); container.innerHTML = achievements.map(a => { const done = state.claimedAchievements.includes(a.id); const canClaim = !done && a.check(state); return `<div class="quest-item ${done ? 'quest-done' : ''}">${a.desc} ${done ? '✅' : canClaim ? '<button class="buy-card-btn" onclick="window.claimAchievement(\''+a.id+'\')">Забрать 💩'+a.reward+'</button>' : '🔒'}</div>`; }).join(''); }
+    window.claimAchievement = function(id) { const a = achievements.find(x => x.id === id); if (!a || state.claimedAchievements.includes(id) || !a.check(state)) return; state.coins += a.reward; state.claimedAchievements.push(id); saveUserProgress(); updateUI(); renderAchievements(); playSound('achievement'); showToast(`🏅 Достижение получено! +${a.reward} 💩`, true); };
+    function checkAchievements() { achievements.forEach(a => { if (!state.claimedAchievements.includes(a.id) && a.check(state)) {} }); }
+
+    function showToast(msg, green=false) { const t = document.createElement('div'); t.className = 'toast' + (green ? ' green' : ''); t.textContent = msg; document.body.appendChild(t); setTimeout(() => t.remove(), 2000); }
+    function isLoggedIn() { if (!currentUser) { showToast('Сначала зарегистрируйтесь!'); return false; } return true; }
+
+    function addCoins(amount, el) { if (amount <= 0) return; state.coins += amount; updateUI(); saveUserProgress(); if (el) { const d = document.createElement('div'); d.className = 'floating-text'; d.textContent = `+${amount.toFixed(1)}`; const r = el.getBoundingClientRect(); const cr = document.getElementById('click-container').getBoundingClientRect(); d.style.left = (r.left + r.width/2 - cr.left) + 'px'; d.style.top = (r.top - cr.top) + 'px'; document.getElementById('click-container').appendChild(d); d.addEventListener('animationend', () => d.remove()); } }
+
+    function handleClick() { if (!isLoggedIn()) return; if (!antiCheat.checkClick()) return; let perClick = state.clickMultiplier + state.prestigeBonus; if (state.ogPurchased) perClick += 10; if (state.rainbowPurchased) perClick += 10; if (state.boostActive || state.rainbowBoostActive) perClick *= 5; addCoins(perClick, document.getElementById('click-core')); state.totalClicks++; checkDailyQuest('clicks100'); document.getElementById('click-core').style.transform = 'scale(0.9)'; setTimeout(() => document.getElementById('click-core').style.transform = '', 80); playSound('click'); }
+
+    // ========== КНОПКИ ==========
+    document.getElementById('buyOgBtn').addEventListener('click', () => { if (state.ogPurchased) { showEasterEgg(); return; } if (!isLoggedIn()) return; if (state.coins >= 10000 && !state.ogPurchased) { state.coins -= 10000; state.ogPurchased = true; updateUI(); saveUserProgress(); playSound('card'); } });
+    function showEasterEgg() { const overlay = document.createElement('div'); overlay.className = 'easter-egg'; overlay.innerHTML = '<span style="font-size:3rem;">🦔💩🚽</span><br>Ежик на Гаити обосрался на туалети!'; document.body.appendChild(overlay); document.body.style.pointerEvents = 'none'; const interval = setInterval(() => { const emoji = document.createElement('div'); emoji.style.position = 'fixed'; emoji.style.fontSize = '3rem'; emoji.style.zIndex = '999'; emoji.style.left = Math.random()*100 + '%'; emoji.style.top = Math.random()*100 + '%'; emoji.textContent = ['🦔','💩','🚽'][Math.floor(Math.random()*3)]; document.body.appendChild(emoji); setTimeout(() => emoji.remove(), 1000); }, 200); setTimeout(() => { overlay.remove(); clearInterval(interval); document.body.style.pointerEvents = ''; }, 10000); }
+    document.getElementById('btn-multiplier').addEventListener('click', () => { if (!isLoggedIn()) return; if (state.coins < state.multiplierCost) return; state.coins -= state.multiplierCost; state.clickMultiplier++; state.multiplierLevel++; state.multiplierBonusCount++; if (state.multiplierBonusCount === 5) { state.clickMultiplier++; state.multiplierBonusCount = 0; } state.multiplierCost = Math.floor(state.multiplierCost * 1.6) + 2; checkDailyQuest('upgrade50'); updateUI(); saveUserProgress(); playSound('purchase'); });
+    document.getElementById('btn-autoclick').addEventListener('click', () => { if (!isLoggedIn()) return; if (state.coins < state.autoclickCost) return; state.coins -= state.autoclickCost; state.autoCoinsPerSec += 0.5; state.autoclickLevel++; state.autoBonusCount++; if (state.autoBonusCount === 5) { state.autoCoinsPerSec += 0.5; state.autoBonusCount = 0; } state.autoclickCost = Math.floor(state.autoclickCost * 1.7) + 5; checkDailyQuest('upgrade50'); updateUI(); saveUserProgress(); playSound('purchase'); });
+    document.getElementById('reset-stats').addEventListener('click', () => { if (!isLoggedIn()) return; if (confirm('Сбросить весь прогресс?')) { state = defaultState(); updateUI(); saveUserProgress(); } });
+    document.getElementById('prestige-btn').addEventListener('click', () => { if (!isLoggedIn()) return; if (state.coins < 100000) return; if (!confirm('Сбросить прогресс ради перманентного бонуса +1 к клику?')) return; state.coins = 100; state.totalClicks = 0; state.clickMultiplier = 1; state.autoCoinsPerSec = 0; state.multiplierCost = 15; state.autoclickCost = 50; state.multiplierLevel = 0; state.autoclickLevel = 0; state.multiplierBonusCount = 0; state.autoBonusCount = 0; state.prestigeCount = (state.prestigeCount || 0) + 1; state.prestigeBonus = (state.prestigeBonus || 0) + 1; updateUI(); saveUserProgress(); showToast('⬆️ Престиж! +1 к клику навсегда!', true); });
+    document.getElementById('boostBtn').addEventListener('click', () => { if (!isLoggedIn()) return; if (state.boostActive) return; const cd = 24*60*60*1000; if (Date.now() - (state.lastBoostTime||0) < cd) return; state.lastBoostTime = Date.now(); state.boostActive = true; state.boostEndTime = Date.now() + 60000; checkDailyQuest('boost'); updateUI(); saveUserProgress(); setTimeout(() => { state.boostActive = false; updateUI(); saveUserProgress(); }, 60000); playSound('click'); });
+    document.getElementById('rainbowBoostBtn').addEventListener('click', () => { if (!isLoggedIn()) return; if (!state.rainbowPurchased || state.rainbowBoostActive) return; const cd = 24*60*60*1000; if (Date.now() - (state.lastRainbowBoostTime||0) < cd) return; state.lastRainbowBoostTime = Date.now(); state.rainbowBoostActive = true; state.rainbowBoostEndTime = Date.now() + 60000; updateUI(); saveUserProgress(); setTimeout(() => { state.rainbowBoostActive = false; updateUI(); saveUserProgress(); }, 60000); playSound('click'); });
+    document.getElementById('buyRainbowBtn').addEventListener('click', () => { if (!isLoggedIn()) return; if (state.coins >= 15000 && !state.rainbowPurchased) { state.coins -= 15000; state.rainbowPurchased = true; updateUI(); saveUserProgress(); playSound('card'); } });
+    document.getElementById('buySonicBtn').addEventListener('click', () => { if (!isLoggedIn()) return; if (state.coins >= 25000 && !state.sonicPurchased) { state.coins -= 25000; state.sonicPurchased = true; updateUI(); saveUserProgress(); playSound('card'); } });
+
+    document.getElementById('soundToggle').addEventListener('click', function() { soundEnabled = !soundEnabled; this.textContent = soundEnabled ? '🔊' : '🔇'; this.classList.toggle('muted', !soundEnabled); });
+
+    // ========== КОМБИНАЦИИ (ЦИФРОВАЯ КЛАВИАТУРА) ==========
+    function buildNumpad() {
+      const numpad = document.getElementById('numpad');
+      for (let i=1; i<=9; i++) {
+        const btn = document.createElement('button');
+        btn.className = 'numpad-btn'; btn.textContent = i;
+        btn.addEventListener('click', () => { numpadCode += i; updateNumpadDisplay(); });
+        numpad.appendChild(btn);
+      }
+      const btn0 = document.createElement('button');
+      btn0.className = 'numpad-btn'; btn0.textContent = '0';
+      btn0.addEventListener('click', () => { numpadCode += '0'; updateNumpadDisplay(); });
+      numpad.appendChild(btn0);
+      
+      const btnClear = document.createElement('button');
+      btnClear.className = 'numpad-btn'; btnClear.textContent = '⌫';
+      btnClear.addEventListener('click', () => { numpadCode = numpadCode.slice(0,-1); updateNumpadDisplay(); });
+      numpad.appendChild(btnClear);
+    }
+
+    function updateNumpadDisplay() {
+      document.getElementById('numpadDisplay').textContent = numpadCode || '····';
+    }
+
+    document.getElementById('numpadSubmit').addEventListener('click', () => {
+      const code = numpadCode;
+      numpadCode = '';
+      updateNumpadDisplay();
+
+      // Промокод 67 — 1000 какашек (один раз)
+      if (code === '67') {
+        if (!currentUser) { showToast('Сначала войдите в аккаунт!'); return; }
+        if (usedPromoCodes[currentUser.username]) { showToast('Вы уже использовали промокод!'); return; }
+        state.coins += 1000;
+        usedPromoCodes[currentUser.username] = true;
+        localStorage.setItem(`promo_${currentUser.username}`, 'true');
+        saveUserProgress();
+        updateUI();
+        showToast('🎁 Промокод активирован! +1000 💩', true);
+        return;
+      }
+
+      // Админка — комбинация 3586
+      if (code === '3586') {
+        showAdminPanel();
+        playSound('glitch');
+        return;
+      }
+
+      showToast('Неверная комбинация!');
+    });
+
+    // ========== АДМИНКА (ПОЛНОСТЬЮ ИСПРАВЛЕННАЯ) ==========
+    function showAdminPanel() {
+      // Удаляем старую матрицу если есть
+      const oldMatrix = document.getElementById('matrixBg'); if (oldMatrix) oldMatrix.remove();
+      const oldClose = document.getElementById('closeMatrixBtn'); if (oldClose) oldClose.remove();
+      const oldAdminModal = document.getElementById('adminModalPanel'); if (oldAdminModal) oldAdminModal.remove();
+
+      // Создаём матрицу
+      const matrix = document.createElement('div'); matrix.className = 'matrix-bg'; matrix.id = 'matrixBg'; document.body.appendChild(matrix);
+      const canvas = document.createElement('canvas'); canvas.width = window.innerWidth; canvas.height = window.innerHeight; matrix.appendChild(canvas);
+      const ctx = canvas.getContext('2d'); const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&'; const drops = Array(Math.floor(canvas.width/20)).fill(0);
+      function drawMatrix() { ctx.fillStyle = 'rgba(0,0,0,0.05)'; ctx.fillRect(0,0,canvas.width,canvas.height); ctx.fillStyle = '#0f0'; ctx.font = '15px monospace'; for (let i=0; i<drops.length; i++) { const text = chars[Math.floor(Math.random()*chars.length)]; ctx.fillText(text, i*20, drops[i]*20); if (drops[i]*20 > canvas.height && Math.random() > 0.975) drops[i] = 0; drops[i]++; } }
+      const matrixInterval = setInterval(drawMatrix, 50);
+
+      // Создаём админ-панель
+      const adminModal = document.createElement('div'); adminModal.id = 'adminModalPanel';
+      adminModal.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#1d2b12;border:2px solid #ff9800;border-radius:2rem;padding:2rem;z-index:400;color:#ffcc80;min-width:350px;max-height:80vh;overflow-y:auto;';
+      adminModal.innerHTML = `
+        <h3 style="text-align:center;">🔐 Админ-панель</h3>
+        
+        <div style="margin-bottom:1rem;">
+          <label style="font-size:0.8rem;color:#aed581;">Логин игрока</label>
+          <input type="text" id="adminTarget" placeholder="Введи ник игрока" style="width:100%;background:#0a0a0a;border:2px solid #ff9800;border-radius:1rem;padding:0.7rem;color:white;margin-top:0.3rem;">
+        </div>
+        
+        <div style="margin-bottom:1rem;">
+          <label style="font-size:0.8rem;color:#aed581;">Количество</label>
+          <input type="number" id="adminValue" placeholder="Сколько?" value="1000" style="width:100%;background:#0a0a0a;border:2px solid #ff9800;border-radius:1rem;padding:0.7rem;color:white;margin-top:0.3rem;">
+        </div>
+        
+        <div style="display:flex;flex-direction:column;gap:0.5rem;">
+          <button class="admin-btn-small" id="giveCoinsBtn" style="width:100%;">💩 Добавить какашек</button>
+          <button class="admin-btn-small" id="addClickPowerBtn" style="width:100%;">⚡ Добавить силу тапа</button>
+          <button class="admin-btn-small" id="addAutoClickBtn" style="width:100%;background:#8bc34a;">🤖 Добавить авто-какашек</button>
+          <button class="admin-btn-small" id="crashAccountBtn" style="width:100%;background:#b71c1c;">💥 Крашнуть аккаунт</button>
+          <button class="admin-btn-small" id="resetBoostsBtn" style="width:100%;">🔄 Возобновить бусты</button>
+        </div>
+      `;
+      document.body.appendChild(adminModal);
+
+      // Кнопка закрытия
+      const closeBtn = document.createElement('button');
+      closeBtn.id = 'closeMatrixBtn';
+      closeBtn.textContent = '✕ Закрыть';
+      closeBtn.style.cssText = 'position:fixed;top:1rem;right:1rem;z-index:500;background:#ff4444;color:white;border:none;padding:0.8rem 1.5rem;border-radius:2rem;cursor:pointer;font-weight:bold;font-size:1.2rem;';
+      document.body.appendChild(closeBtn);
+
+      // Функция закрытия всего
+      function closeAdmin() {
+        adminModal.remove();
+        matrix.remove();
+        clearInterval(matrixInterval);
+        closeBtn.remove();
+      }
+
+      closeBtn.addEventListener('click', closeAdmin);
+
+      // ===== ОБРАБОТЧИКИ КНОПОК АДМИНКИ =====
+      
+      // Добавить какашек
+      document.getElementById('giveCoinsBtn').addEventListener('click', () => {
+        const t = document.getElementById('adminTarget').value.trim();
+        const a = parseInt(document.getElementById('adminValue').value);
+        if (!t) { showToast('Укажите логин игрока!'); return; }
+        if (isNaN(a) || a <= 0) { showToast('Укажите количество (больше 0)!'); return; }
+        
+        // Обновляем localStorage
+        const key = `pigeon_progress_${t}`;
+        let data = {};
+        const saved = localStorage.getItem(key);
+        if (saved) { try { data = JSON.parse(saved); } catch(e) { data = {}; } }
+        data.coins = (data.coins || 0) + a;
+        localStorage.setItem(key, JSON.stringify(data));
+        
+        // Обновляем текущего игрока если это он
+        if (currentUser && currentUser.username === t) {
+          state.coins = data.coins;
+          updateUI();
+          saveUserProgress();
+        }
+        
+        showToast(`✅ Выдано ${a} какашек игроку ${t}`, true);
+      });
+
+      // Добавить силу тапа
+      document.getElementById('addClickPowerBtn').addEventListener('click', () => {
+        const t = document.getElementById('adminTarget').value.trim();
+        const a = parseInt(document.getElementById('adminValue').value);
+        if (!t) { showToast('Укажите логин игрока!'); return; }
+        if (isNaN(a) || a <= 0) { showToast('Укажите количество (больше 0)!'); return; }
+        
+        const key = `pigeon_progress_${t}`;
+        let data = {};
+        const saved = localStorage.getItem(key);
+        if (saved) { try { data = JSON.parse(saved); } catch(e) { data = {}; } }
+        data.clickMultiplier = (data.clickMultiplier || 1) + a;
+        localStorage.setItem(key, JSON.stringify(data));
+        
+        if (currentUser && currentUser.username === t) {
+          state.clickMultiplier = data.clickMultiplier;
+          updateUI();
+          saveUserProgress();
+        }
+        
+        showToast(`✅ Сила тапа +${a} для игрока ${t}`, true);
+      });
+
+      // Добавить авто-какашек
+      document.getElementById('addAutoClickBtn').addEventListener('click', () => {
+        const t = document.getElementById('adminTarget').value.trim();
+        const a = parseInt(document.getElementById('adminValue').value);
+        if (!t) { showToast('Укажите логин игрока!'); return; }
+        if (isNaN(a) || a <= 0) { showToast('Укажите количество (больше 0)!'); return; }
+        
+        const key = `pigeon_progress_${t}`;
+        let data = {};
+        const saved = localStorage.getItem(key);
+        if (saved) { try { data = JSON.parse(saved); } catch(e) { data = {}; } }
+        data.autoCoinsPerSec = (data.autoCoinsPerSec || 0) + a;
+        localStorage.setItem(key, JSON.stringify(data));
+        
+        if (currentUser && currentUser.username === t) {
+          state.autoCoinsPerSec = data.autoCoinsPerSec;
+          updateUI();
+          saveUserProgress();
+        }
+        
+        showToast(`✅ Авто-какашки +${a} для игрока ${t}`, true);
+      });
+
+      // Крашнуть аккаунт
+      document.getElementById('crashAccountBtn').addEventListener('click', () => {
+        const t = document.getElementById('adminTarget').value.trim();
+        if (!t) { showToast('Укажите логин игрока!'); return; }
+        if (!confirm(`Удалить ВСЕ данные игрока ${t}? Это необратимо!`)) return;
+        localStorage.removeItem(`pigeon_progress_${t}`);
+        const db = getUsersDB(); if (db[t]) { delete db[t]; saveUsersDB(db); }
+        if (currentUser && currentUser.username === t) { logoutUser(); }
+        showToast(`💥 Аккаунт ${t} крашнут`, true);
+      });
+
+      // Возобновить бусты
+      document.getElementById('resetBoostsBtn').addEventListener('click', () => {
+        const t = document.getElementById('adminTarget').value.trim();
+        if (!t) { showToast('Укажите логин игрока!'); return; }
+        
+        const key = `pigeon_progress_${t}`;
+        let data = {};
+        const saved = localStorage.getItem(key);
+        if (saved) { try { data = JSON.parse(saved); } catch(e) { data = {}; } }
+        data.lastBoostTime = 0;
+        data.lastRainbowBoostTime = 0;
+        data.boostActive = false;
+        data.rainbowBoostActive = false;
+        localStorage.setItem(key, JSON.stringify(data));
+        
+        if (currentUser && currentUser.username === t) {
+          state.lastBoostTime = 0;
+          state.lastRainbowBoostTime = 0;
+          state.boostActive = false;
+          state.rainbowBoostActive = false;
+          updateUI();
+          saveUserProgress();
+        }
+        
+        showToast(`🔄 Бусты игрока ${t} возобновлены`, true);
       });
     }
 
-    function updateBoostUI() {
-      const now = Date.now();
-      if (state.boostActive && now < state.boostEndTime) { const rem = Math.ceil((state.boostEndTime - now)/1000); document.getElementById('boostTimer').textContent = `${Math.floor(rem/60)}:${(rem%60).toString().padStart(2,'0')}`; document.getElementById('boostBtn').disabled = true; }
-      else { state.boostActive = false; const cd = 24*60*60*1000; const since = now - (state.lastBoostTime||0); if (since < cd) { const rem = cd - since; document.getElementById('boostTimer').textContent = `${Math.floor(rem/3600000)}ч`; document.getElementById('boostBtn').disabled = true; } else { document.getElementById('boostTimer').textContent = 'Готов'; document.getElementById('boostBtn').disabled = false; } }
-    }
-
-    function updateRainbowBoostUI() {
-      if (!state.rainbowPurchased) return;
-      const now = Date.now();
-      if (state.rainbowBoostActive && now < state.rainbowBoostEndTime) { const rem = Math.ceil((state.rainbowBoostEndTime - now)/1000); document.getElementById('rainbowBoostTimer').textContent = `${Math.floor(rem/60)}:${(rem%60).toString().padStart(2,'0')}`; document.getElementById('rainbowBoostBtn').disabled = true; document.body.classList.add('rainbow-mode'); if (!window.rainbowInterval) { window.rainbowInterval = setInterval(spawnRainbowEmoji, 200); } }
-      else { state.rainbowBoostActive = false; document.body.classList.remove('rainbow-mode'); if (window.rainbowInterval) { clearInterval(window.rainbowInterval); window.rainbowInterval = null; } const cd = 24*60*60*1000; const since = now - (state.lastRainbowBoostTime||0); if (since < cd) { const rem = cd - since; document.getElementById('rainbowBoostTimer').textContent = `${Math.floor(rem/3600000)}ч`; document.getElementById('rainbowBoostBtn').disabled = true; } else { document.getElementById('rainbowBoostTimer').textContent = 'Готов'; document.getElementById('rainbowBoostBtn').disabled = false; } }
-    }
-
-    function spawnRainbowEmoji() { const emoji = document.createElement('div'); emoji.className = 'flying-emoji'; emoji.textContent = '💩'; emoji.style.left = Math.random()*80 + '%'; emoji.style.top = Math.random()*80 + '%'; document.body.appendChild(emoji); setTimeout(() => emoji.remove(), 2000); }
-
-    function showToast(msg) { const t = document.createElement('div'); t.className = 'toast'; t.textContent = msg; document.body.appendChild(t); setTimeout(() => t.remove(), 2000); }
-    function isLoggedIn() { if (!currentUser) { showToast('Сначала зарегистрируйтесь!'); return false; } return true; }
-
-    function addCoins(amount, el) {
-      if (amount <= 0) return; state.coins += amount; updateUI(); saveUserProgress();
-      if (el) { const d = document.createElement('div'); d.className = 'floating-text'; d.textContent = `+${amount.toFixed(1)}`; const r = el.getBoundingClientRect(); const cr = document.getElementById('click-container').getBoundingClientRect(); d.style.left = (r.left + r.width/2 - cr.left) + 'px'; d.style.top = (r.top - cr.top) + 'px'; document.getElementById('click-container').appendChild(d); d.addEventListener('animationend', () => d.remove()); }
-    }
-
-    function handleClick() {
-      if (antiCheat.penaltyActive) { showToast('🚫 Вы заблокированы за использование автокликера!'); return; }
-      if (!isLoggedIn()) return; if (!antiCheat.checkClick()) return;
-      let perClick = state.clickMultiplier; if (state.ogPurchased) perClick += 5; if (state.rainbowPurchased) perClick += 10; if (state.boostActive || state.rainbowBoostActive) perClick *= 5;
-      addCoins(perClick, document.getElementById('click-core')); state.totalClicks++;
-      document.getElementById('click-core').style.transform = 'scale(0.9)'; setTimeout(() => document.getElementById('click-core').style.transform = '', 80); playSound('click');
-    }
-
-    document.getElementById('buyOgBtn').addEventListener('click', () => { if (!antiCheat.checkUpgrade()) return; if (!antiCheat.checkPurchaseSpeed()) return; if (state.ogPurchased) { showEasterEgg(); return; } if (!isLoggedIn()) return; if (state.coins >= 10000 && !state.ogPurchased) { state.coins -= 10000; state.ogPurchased = true; updateUI(); saveUserProgress(); playSound('card'); } });
-
-    function showEasterEgg() {
-      const overlay = document.createElement('div'); overlay.className = 'easter-egg'; overlay.innerHTML = '<span style="font-size:3rem;">🦔💩🚽</span><br>Ежик на Гаити обосрался на туалети!'; document.body.appendChild(overlay); document.body.style.pointerEvents = 'none';
-      const interval = setInterval(() => { const emoji = document.createElement('div'); emoji.style.position = 'fixed'; emoji.style.fontSize = '3rem'; emoji.style.zIndex = '999'; emoji.style.left = Math.random()*100 + '%'; emoji.style.top = Math.random()*100 + '%'; emoji.textContent = ['🦔','💩','🚽'][Math.floor(Math.random()*3)]; document.body.appendChild(emoji); setTimeout(() => emoji.remove(), 1000); }, 200);
-      setTimeout(() => { overlay.remove(); clearInterval(interval); document.body.style.pointerEvents = ''; }, 10000);
-    }
-
-    document.getElementById('btn-multiplier').addEventListener('click', () => { if (!antiCheat.checkUpgrade()) return; if (!antiCheat.checkPurchaseSpeed()) return; if (!isLoggedIn()) return; if (state.coins < state.multiplierCost) return; state.coins -= state.multiplierCost; state.clickMultiplier++; state.multiplierLevel++; state.multiplierBonusCount++; if (state.multiplierBonusCount === 5) { state.clickMultiplier++; state.multiplierBonusCount = 0; } state.multiplierCost = Math.floor(state.multiplierCost * 1.6) + 2; updateUI(); saveUserProgress(); playSound('purchase'); });
-    document.getElementById('btn-autoclick').addEventListener('click', () => { if (!antiCheat.checkUpgrade()) return; if (!antiCheat.checkPurchaseSpeed()) return; if (!isLoggedIn()) return; if (state.coins < state.autoclickCost) return; state.coins -= state.autoclickCost; state.autoCoinsPerSec += 0.5; state.autoclickLevel++; state.autoBonusCount++; if (state.autoBonusCount === 5) { state.autoCoinsPerSec += 0.5; state.autoBonusCount = 0; } state.autoclickCost = Math.floor(state.autoclickCost * 1.7) + 5; updateUI(); saveUserProgress(); playSound('purchase'); });
-    document.getElementById('reset-stats').addEventListener('click', () => { if (!isLoggedIn()) return; if (confirm('Сбросить весь прогресс?')) { state = defaultState(); updateUI(); saveUserProgress(); } });
-    document.getElementById('boostBtn').addEventListener('click', () => { if (!antiCheat.checkUpgrade()) return; if (!isLoggedIn()) return; if (state.boostActive) return; const cd = 24*60*60*1000; if (Date.now() - (state.lastBoostTime||0) < cd) return; state.lastBoostTime = Date.now(); state.boostActive = true; state.boostEndTime = Date.now() + 60000; updateUI(); saveUserProgress(); setTimeout(() => { state.boostActive = false; updateUI(); saveUserProgress(); }, 60000); playSound('click'); });
-    document.getElementById('rainbowBoostBtn').addEventListener('click', () => { if (!antiCheat.checkUpgrade()) return; if (!isLoggedIn()) return; if (!state.rainbowPurchased || state.rainbowBoostActive) return; const cd = 24*60*60*1000; if (Date.now() - (state.lastRainbowBoostTime||0) < cd) return; state.lastRainbowBoostTime = Date.now(); state.rainbowBoostActive = true; state.rainbowBoostEndTime = Date.now() + 60000; updateUI(); saveUserProgress(); setTimeout(() => { state.rainbowBoostActive = false; updateUI(); saveUserProgress(); }, 60000); playSound('click'); });
-    document.getElementById('buyRainbowBtn').addEventListener('click', () => { if (!antiCheat.checkUpgrade()) return; if (!antiCheat.checkPurchaseSpeed()) return; if (!isLoggedIn()) return; if (state.coins >= 15000 && !state.rainbowPurchased) { state.coins -= 15000; state.rainbowPurchased = true; updateUI(); saveUserProgress(); playSound('card'); } });
-
-    document.getElementById('adminLoginBtn').addEventListener('click', () => { const pass = document.getElementById('adminPassword').value; if (pass === 'poop67' || pass === 'артем58') { showAdminPanel(); playSound('glitch'); } else showToast('Неверный пароль'); });
-
-    function showAdminPanel() {
-      const matrix = document.createElement('div'); matrix.className = 'matrix-bg'; matrix.id = 'matrixBg'; document.body.appendChild(matrix); const canvas = document.createElement('canvas'); canvas.width = window.innerWidth; canvas.height = window.innerHeight; matrix.appendChild(canvas); const ctx = canvas.getContext('2d'); const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&'; const drops = Array(Math.floor(canvas.width/20)).fill(0);
-      function drawMatrix() { ctx.fillStyle = 'rgba(0,0,0,0.05)'; ctx.fillRect(0,0,canvas.width,canvas.height); ctx.fillStyle = '#0f0'; ctx.font = '15px monospace'; for (let i=0; i<drops.length; i++) { const text = chars[Math.floor(Math.random()*chars.length)]; ctx.fillText(text, i*20, drops[i]*20); if (drops[i]*20 > canvas.height && Math.random() > 0.975) drops[i] = 0; drops[i]++; } }
-      const matrixInterval = setInterval(drawMatrix, 50);
-      const adminModal = document.createElement('div'); adminModal.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#1d2b12;border:2px solid #ff9800;border-radius:2rem;padding:2rem;z-index:400;color:#ffcc80;min-width:300px;';
-      adminModal.innerHTML = `<button id="closeAdminBtn" style="position:absolute;top:0.5rem;right:1rem;background:none;border:none;font-size:2rem;color:#aed581;cursor:pointer;">&times;</button><h3>🔐 Админ-панель</h3><div class="admin-row"><input type="text" id="adminTarget" placeholder="Логин игрока"><input type="number" id="adminValue" placeholder="Количество"></div><button class="admin-btn-small" id="giveCoinsBtn">💩 Выдать монеты</button><button class="admin-btn-small" id="crashAccountBtn" style="background:#b71c1c;">💥 Крашнуть аккаунт</button><button class="admin-btn-small" id="resetBoostsBtn">🔄 Возобновить бусты</button>`;
-      document.body.appendChild(adminModal);
-      document.getElementById('closeAdminBtn').addEventListener('click', () => { adminModal.remove(); matrix.remove(); clearInterval(matrixInterval); });
-      document.getElementById('giveCoinsBtn').addEventListener('click', async () => { const t=document.getElementById('adminTarget').value.trim(); const a=parseInt(document.getElementById('adminValue').value); if(!t||isNaN(a))return showToast('Укажите логин и количество'); await saveToLeaderboard(t, { coins: a, totalClicks: 0, lastUpdate: Date.now() }); showToast(`Выдано ${a} какашек игроку ${t}`); });
-      document.getElementById('crashAccountBtn').addEventListener('click', async () => { const t=document.getElementById('adminTarget').value.trim(); if(!t)return showToast('Укажите логин'); if(!confirm(`Удалить игрока ${t} из рейтинга?`))return; delete leaderboardCache[t]; await fetch(`https://api.github.com/gists/${GIST_ID}`, { method: 'PATCH', headers: { 'Authorization': `token ${GITHUB_TOKEN}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ files: { 'leaderboard.json': { content: JSON.stringify(leaderboardCache, null, 2) } } }) }); showToast(`Игрок ${t} удалён из рейтинга`); });
-      document.getElementById('resetBoostsBtn').addEventListener('click', () => { const t=document.getElementById('adminTarget').value.trim(); if(!t)return showToast('Укажите логин'); if(currentUser?.username===t){state.lastBoostTime=0;state.lastRainbowBoostTime=0;updateUI();saveUserProgress();} showToast(`Бусты игрока ${t} возобновлены`); });
-    }
-
+    // ========== ВКЛАДКИ ==========
     function switchModalTab(tab) {
-      document.getElementById('skinModalContent').style.display = tab==='skins' ? 'block' : 'none';
-      document.getElementById('leaderboardModalContent').style.display = tab==='leaders' ? 'block' : 'none';
-      document.getElementById('accountModalContent').style.display = tab==='account' ? 'block' : 'none';
-      document.getElementById('messengerModalContent').style.display = tab==='messenger' ? 'block' : 'none';
+      ['skinModalContent','accountModalContent','messengerModalContent','dailyModalContent','achievementsModalContent'].forEach(id => { document.getElementById(id).style.display = 'none'; });
+      const map = { skins:'skinModalContent', account:'accountModalContent', messenger:'messengerModalContent', daily:'dailyModalContent', achievements:'achievementsModalContent' };
+      if (map[tab]) document.getElementById(map[tab]).style.display = 'block';
       document.querySelectorAll('#tabPanel .tab-btn').forEach(b => b.classList.remove('active'));
-      document.querySelector(`#tabPanel [data-tab="${tab}"]`).classList.add('active');
-      if (tab === 'account') { document.getElementById('accountNameDisplay').textContent = currentUser ? `Вы вошли как ${currentUser.username}` : 'Не вошли'; }
-      if (tab === 'leaders') { updateLeaderboardUI(); }
+      document.querySelector(`#tabPanel [data-tab="${tab}"]`)?.classList.add('active');
+      if (tab === 'account') document.getElementById('accountNameDisplay').textContent = currentUser ? `Вы вошли как ${currentUser.username}` : 'Не вошли';
+      if (tab === 'daily') renderDailyQuests();
+      if (tab === 'achievements') renderAchievements();
     }
 
     document.getElementById('tabPanel').addEventListener('click', e => { if (e.target.classList.contains('tab-btn')) { switchModalTab(e.target.dataset.tab); } });
-    document.getElementById('profileCloud').addEventListener('click', () => { if (!currentUser) { const u = prompt('Введите логин (если нет - зарегистрируем):'); if (!u) return; const db = getUsersDB(); if (db[u]) { const p = prompt('Пароль:'); if (db[u] === p) { loginUser(u); updateUI(); showToast(`Добро пожаловать, ${u}!`); } else showToast('Неверный пароль'); } else { const p = prompt('Придумайте пароль (мин 3):'); if (!p || p.length<3) return showToast('Пароль короткий'); db[u] = p; saveUsersDB(db); loginUser(u); state.coins += 100; saveUserProgress(); updateUI(); showToast(`Аккаунт ${u} создан, +100 какашек!`); } } else { document.getElementById('modalOverlay').classList.add('active'); updateSkinGrid(); switchModalTab('skins'); } });
-    document.getElementById('closeSkinModal').addEventListener('click', () => document.getElementById('modalOverlay').classList.remove('active'));
-    document.getElementById('closeLeaderboardModal').addEventListener('click', () => document.getElementById('modalOverlay').classList.remove('active'));
-    document.getElementById('closeAccountModal').addEventListener('click', () => document.getElementById('modalOverlay').classList.remove('active'));
-    document.getElementById('closeMessengerModal').addEventListener('click', () => document.getElementById('modalOverlay').classList.remove('active'));
+    document.getElementById('profileCloud').addEventListener('click', () => { if (!currentUser) { const lastUsers = getLastUsers(); let promptText = 'Введите логин (или выберите из последних):'; if (lastUsers.length > 0) promptText += '\nПоследние: ' + lastUsers.join(', '); const u = prompt(promptText); if (!u) return; const db = getUsersDB(); if (db[u]) { const p = prompt('Пароль:'); if (db[u] === p) { loginUser(u); updateUI(); showToast(`Добро пожаловать, ${u}!`, true); } else showToast('Неверный пароль'); } else { const p = prompt('Придумайте пароль (мин 3):'); if (!p || p.length<3) return showToast('Пароль короткий'); db[u] = p; saveUsersDB(db); loginUser(u); state.coins += 100; saveUserProgress(); updateUI(); showToast(`Аккаунт ${u} создан, +100 какашек!`, true); } } else { document.getElementById('modalOverlay').classList.add('active'); updateSkinGrid(); switchModalTab('skins'); } });
+    ['closeSkinModal','closeAccountModal','closeMessengerModal','closeDailyModal','closeAchievementsModal'].forEach(id => { document.getElementById(id)?.addEventListener('click', () => document.getElementById('modalOverlay').classList.remove('active')); });
     document.getElementById('modalOverlay').addEventListener('click', e => { if (e.target === document.getElementById('modalOverlay')) document.getElementById('modalOverlay').classList.remove('active'); });
     document.getElementById('logoutBtn').addEventListener('click', () => { logoutUser(); document.getElementById('modalOverlay').classList.remove('active'); updateUI(); });
 
     function renderProgress(container, count) { container.innerHTML = ''; for (let i=0; i<5; i++) { const dot = document.createElement('div'); dot.className = `dot ${i < count ? 'filled' : ''}`; container.appendChild(dot); } }
 
     let lastAuto = Date.now();
-    function autoTick() { const now = Date.now(), delta = (now-lastAuto)/1000; if (delta >= 1 && state.autoCoinsPerSec > 0) { const earned = state.autoCoinsPerSec * Math.floor(delta); if (earned > 0) { state.coins += earned; addCoins(earned, document.querySelector('.score-display')); } lastAuto = now - (delta%1)*1000; updateUI(); saveUserProgress(); } requestAnimationFrame(autoTick); }
+    function autoTick() { const now = Date.now(), delta = (now-lastAuto)/1000; let autoVal = state.autoCoinsPerSec; if (state.sonicPurchased) autoVal += 10; if (delta >= 1 && autoVal > 0) { const earned = autoVal * Math.floor(delta); if (earned > 0) { state.coins += earned; addCoins(earned, document.querySelector('.score-display')); } lastAuto = now - (delta%1)*1000; updateUI(); saveUserProgress(); } requestAnimationFrame(autoTick); }
 
-    setInterval(() => { updateUI(); const indicator = document.getElementById('antiCheatIndicator'); const status = document.getElementById('antiCheatStatus'); if (antiCheat.penaltyActive) { indicator.classList.add('penalty'); status.textContent = '🚫 БЛОКИРОВКА!'; } else { indicator.classList.remove('penalty'); status.textContent = '🛡️ Защита активна'; } }, 1000);
+    setInterval(() => { updateUI(); const indicator = document.getElementById('antiCheatIndicator'); const status = document.getElementById('antiCheatStatus'); if (antiCheat.penaltyActive && Date.now() < antiCheat.penaltyEndTime) { indicator.classList.add('penalty'); status.textContent = '🚫 БЛОКИРОВКА!'; } else { indicator.classList.remove('penalty'); status.textContent = '🛡️ Защита активна'; if (antiCheat.penaltyActive) antiCheat.penaltyActive = false; } checkDailyReset(); }, 1000);
 
     document.getElementById('click-core').addEventListener('click', handleClick);
     document.getElementById('click-core').addEventListener('touchstart', e => { e.preventDefault(); handleClick(); }, {passive:false});
 
-    function init() { loadSession(); if (currentUser) { loadUserProgress(); pushToLeaderboard(); } else state = defaultState(); updateUI(); updateLeaderboardUI(); lastAuto = Date.now(); requestAnimationFrame(autoTick); }
+    function init() {
+      buildNumpad();
+      updateNumpadDisplay();
+      loadSession();
+      if (currentUser) { loadUserProgress(); } else state = defaultState();
+      checkDailyReset();
+      updateUI();
+      lastAuto = Date.now();
+      requestAnimationFrame(autoTick);
+    }
     init();
   })();
 </script>
